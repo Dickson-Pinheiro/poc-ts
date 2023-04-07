@@ -18,7 +18,33 @@ async function create({description, title}: Task){
     }
 }
 
+async function done(id: number){
+    try {
+        await todoRepository.done(id)
+    } catch (error) {
+        console.log(error)
+    }
+}
+async function undone(id: number){
+    try {
+        await todoRepository.undone(id)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function remove(id: number){
+    try {
+        await todoRepository.remove(id)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export default {
     getAll,
-    create
+    create,
+    done,
+    undone,
+    remove
 }
