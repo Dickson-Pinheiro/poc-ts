@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import todoControllers from "../controllers/todoControllers.js"
 
 const routes = Router()
