@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import todoServices from "../services/todoServices.js";
+import { Task } from "../protocols/task.js";
 
 async function getTodos(req: Request, res: Response){
     try {
@@ -10,6 +11,17 @@ async function getTodos(req: Request, res: Response){
     }
 }
 
+async function create(req: Request, res: Response){
+    const {title, description} = req.body as Task
+    try {
+        await todoServices.create({title, description})
+        res.status(201).send()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export default {
-    getTodos
+    getTodos,
+    create
 }

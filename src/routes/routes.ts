@@ -4,5 +4,6 @@ import todoControllers from "../controllers/todoControllers.js"
 const routes = Router()
 
 routes.get("/todo", todoControllers.getTodos)
+routes.post("/todo", todoControllers.create)
 
 export default routes
