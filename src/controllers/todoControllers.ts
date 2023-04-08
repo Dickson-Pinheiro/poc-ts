@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, ErrorRequestHandler } from "express";
+import { NextFunction, Request, Response } from "express";
 import todoServices from "../services/todoServices.js";
 import { Task } from "../protocols/task.js";
 
@@ -27,7 +27,6 @@ async function done(req: Request, res: Response, next: NextFunction){
         await todoServices.done(Number(id))
         return res.sendStatus(200)
     } catch (error) {
-        console.log(error)
         next(error)
     }
 }

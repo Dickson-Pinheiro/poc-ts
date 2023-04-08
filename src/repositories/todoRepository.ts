@@ -1,41 +1,70 @@
 import { QueryResult } from "pg"
 import connection from "../database/connection.js"
 import { Task, TaskEntity } from "../protocols/task.js"
+import { serverError } from "../errors/internalServerError.js"
 
 async function getAll(): Promise<QueryResult<TaskEntity>>{
-    return await connection.query(`
+    try {
+        return await connection.query(`
         SELECT * FROM tasks;
     `)
+    } catch (error) {
+        throw serverError()
+    }
+   
 }
 
 async function create({title, description}: Task){
-    await connection.query(`
-    insert into tasks (title, description) values ($1, $2);
-    `, [title, description])
+    try {
+        await connection.query(`
+        insert into tasks (title, description) values ($1, $2);
+        `, [title, description])   
+    } catch (error) {
+        throw serverError()
+    }
 }
 
 async function done(id: number){
-    await connection.query(`
+    try {
+        await connection.query(`
         update tasks set done=$1 where id=$2;
-    `, [true, id])
+    `, [true, id])    
+    } catch (error) {
+        throw serverError()
+    }
+    
 }
 
 async function undone(id: number){
-    await connection.query(`
-    update tasks set done=$1 where id=$2;
-    `, [false, id])
+    try {
+        await connection.query(`
+        update tasks set done=$1 where id=$2;
+        `, [false, id])    
+    } catch (error) {
+        throw serverError()
+    }
+    
 }
 
 async function remove(id: number){
-    await connection.query(`
-    DELETE FROM tasks where id=$1
-    `, [id])
+    try {
+        await connection.query(`
+        DELETE FROM tasks where id=$1
+        `, [id])   
+    } catch (error) {
+        throw serverError()
+    }
 }
 
 async function getOne(id: number): Promise<QueryResult<TaskEntity>>{
-    return await connection.query(`
-    SELECT * FROM tasks where id = $1;
-   `, [id])
+    try {
+        return await connection.query(`
+        SELECT * FROM tasks where id = $1;
+       `, [id])
+    } catch (error) {
+        throw serverError()
+    }
+   
 }
 
 export default {
