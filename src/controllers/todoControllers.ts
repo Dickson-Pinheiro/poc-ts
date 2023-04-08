@@ -1,58 +1,54 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response, ErrorRequestHandler } from "express";
 import todoServices from "../services/todoServices.js";
 import { Task } from "../protocols/task.js";
 
-async function getTodos(req: Request, res: Response){
+async function getTodos( req: Request, res: Response, next: NextFunction){
     try {
         const todos = await todoServices.getAll()
-        res.send(todos)   
+        return res.send(todos)   
     } catch (error) {
-        console.log(error)
-        res.status(500).send()
+        next(error)
     }
 }
 
-async function create(req: Request, res: Response){
+async function create(req: Request, res: Response, next: NextFunction){
     const {title, description} = req.body as Task
     try {
         await todoServices.create({title, description})
-        res.status(201).send()
+        return res.status(201).send()
     } catch (error) {
-        console.log(error)
-        res.status(500).send()
+       next(error)
     }
 }
 
-async function done(req: Request, res: Response){
+async function done(req: Request, res: Response, next: NextFunction){
     const {id} = req.params
     try {
         await todoServices.done(Number(id))
-        res.sendStatus(200)
+        return res.sendStatus(200)
     } catch (error) {
         console.log(error)
-        res.status(500).send()
+        next(error)
     }
 }
 
-async function undone(req: Request, res: Response){
+async function undone(req: Request, res: Response, next: NextFunction){
     const {id} = req.params
     try {
         await todoServices.undone(Number(id))
-        res.sendStatus(200)
+        return res.sendStatus(200)
     } catch (error) {
-        console.log(error)
-        res.status(500).send()
+        next(error)
     }
 }
 
-async function remove(req: Request, res: Response){
+async function remove(req: Request, res: Response, next: NextFunction){
     const {id} = req.params
     try {
         await todoServices.remove(Number(id))
-        res.status(203).send()
+        return res.status(203).send()
     } catch (error) {
-        console.log(error)
-        res.sendStatus(500)
+        next(error)
     }
 }
 
