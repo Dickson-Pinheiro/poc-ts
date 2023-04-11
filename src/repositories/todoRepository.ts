@@ -1,13 +1,11 @@
 import { QueryResult } from "pg"
-import connection from "../database/connection.js"
-import { Task, TaskEntity } from "../protocols/task.js"
+import prisma from "../database/connection.js"
+import { Task} from "../protocols/task.js"
 import { serverError } from "../errors/internalServerError.js"
 
-async function getAll(): Promise<QueryResult<TaskEntity>>{
+async function getAll(){
     try {
-        return await connection.query(`
-        SELECT * FROM tasks;
-    `)
+        return prisma.tasks.findMany()
     } catch (error) {
         throw serverError()
     }
@@ -16,9 +14,7 @@ async function getAll(): Promise<QueryResult<TaskEntity>>{
 
 async function create({title, description}: Task){
     try {
-        await connection.query(`
-        insert into tasks (title, description) values ($1, $2);
-        `, [title, description])   
+        await prisma.tasks.create({data: {title, description}})  
     } catch (error) {
         throw serverError()
     }
@@ -26,9 +22,14 @@ async function create({title, description}: Task){
 
 async function done(id: number){
     try {
-        await connection.query(`
-        update tasks set done=$1 where id=$2;
-    `, [true, id])    
+        await prisma.tasks.update({where: {
+            id
+        },
+        data: {
+            done: true
+        }
+    },
+        )  
     } catch (error) {
         throw serverError()
     }
@@ -37,9 +38,14 @@ async function done(id: number){
 
 async function undone(id: number){
     try {
-        await connection.query(`
-        update tasks set done=$1 where id=$2;
-        `, [false, id])    
+        await prisma.tasks.update({where: {
+            id
+        },
+        data: {
+            done: false
+        }
+    },
+        )
     } catch (error) {
         throw serverError()
     }
@@ -48,19 +54,21 @@ async function undone(id: number){
 
 async function remove(id: number){
     try {
-        await connection.query(`
-        DELETE FROM tasks where id=$1
-        `, [id])   
+        await prisma.tasks.delete({
+            where: {
+            id
+        }
+    })
     } catch (error) {
         throw serverError()
     }
 }
 
-async function getOne(id: number): Promise<QueryResult<TaskEntity>>{
+async function getOne(id: number){
     try {
-        return await connection.query(`
-        SELECT * FROM tasks where id = $1;
-       `, [id])
+        return await prisma.tasks.findUnique({where: {
+            id
+        }})
     } catch (error) {
         throw serverError()
     }

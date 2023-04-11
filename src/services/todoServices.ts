@@ -1,12 +1,11 @@
 import { notFoundError } from "../errors/notFoundError.js"
-import { serverError } from "../errors/internalServerError.js"
 import { Task } from "../protocols/task.js"
 import todoRepository from "../repositories/todoRepository.js"
 
 async function getAll(){
     try {
-        const todosResult = await todoRepository.getAll()
-        return todosResult.rows
+        const todos = await todoRepository.getAll()
+        return todos
     } catch (error) {
         throw error
     }
@@ -23,8 +22,8 @@ async function create({description, title}: Task){
 
 async function done(id: number){
     try {
-        const {rowCount} = await todoRepository.getOne(id)
-        if(!rowCount) throw notFoundError()
+        const todo = await todoRepository.getOne(id)
+        if(!todo) throw notFoundError()
         await todoRepository.done(id)  
     } catch (error) {
         throw error
@@ -34,8 +33,8 @@ async function done(id: number){
 
 async function undone(id: number){
     try {
-        const {rowCount} = await todoRepository.getOne(id)
-        if(!rowCount) throw notFoundError()
+        const todo = await todoRepository.getOne(id)
+        if(!todo) throw notFoundError()
         await todoRepository.undone(id)    
     } catch (error) {
         throw error
@@ -44,8 +43,8 @@ async function undone(id: number){
 
 async function remove(id: number){
     try {
-        const {rowCount} = await todoRepository.getOne(id)
-    if(!rowCount) throw notFoundError()
+        const todo = await todoRepository.getOne(id)
+        if(!todo) throw notFoundError()
     await todoRepository.remove(id)
     } catch (error) {
         throw error
