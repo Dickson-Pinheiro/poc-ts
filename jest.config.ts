@@ -1,15 +1,14 @@
-import type {Config} from 'jest';
-
-const config: Config = {
-  verbose: true,
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
-  moduleDirectories: ['node_modules', 'src', 'tests'],
-  modulePaths: ["<rootDir>/src"],
-  transform: {
-    ".+\\.ts$": "ts-jest",
+  extensionsToTreatAsEsm: [".ts"],
+  globals: {
+    "ts-jest": {
+      useESM: true,
+    },
   },
-  testMatch: ["<rootDir>/tests/*.(test|spec).ts"],
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1",
+  },
 };
-
-export default config;
