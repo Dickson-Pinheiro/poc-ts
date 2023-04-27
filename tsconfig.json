@@ -3,7 +3,9 @@
     "outDir": "dist",
     "esModuleInterop": true,
     "module": "es6",
-    "moduleResolution":"nodenext"
+    "moduleResolution":"nodenext",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "ts-node": {
     "esm": true

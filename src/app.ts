@@ -7,6 +7,5 @@ const app = express()
 app.use(express.json())
 app.use(routes)
 app.use(handleAplicationErrors)
-app.listen(5000, () => {
-    console.log("executando")
-})
+
+export {app}
