@@ -24,8 +24,8 @@ async function create(req: Request, res: Response, next: NextFunction){
 async function done(req: Request, res: Response, next: NextFunction){
     const {id} = req.params
     try {
-        await todoServices.done(Number(id))
-        return res.sendStatus(200)
+        const todo = await todoServices.done(Number(id))
+        return res.send(todo)
     } catch (error) {
         next(error)
     }
@@ -34,8 +34,8 @@ async function done(req: Request, res: Response, next: NextFunction){
 async function undone(req: Request, res: Response, next: NextFunction){
     const {id} = req.params
     try {
-        await todoServices.undone(Number(id))
-        return res.sendStatus(200)
+        const todo = await todoServices.undone(Number(id))
+        return res.send(todo)
     } catch (error) {
         next(error)
     }

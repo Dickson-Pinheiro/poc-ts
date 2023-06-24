@@ -5,11 +5,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/server.ts",
-    "start": "node dist/server.js",
+    "dev": "npx dotenv -e .development.env nodemon src/server.ts",
+    "start": "npx dotenv -e .development.env node dist/server.js",
     "build": "tsc",
     "prisma:seed": "npx prisma db seed",
-    "test": "npx dotenv -e .env.test npx jest"
+    "test": "npx dotenv -e .test.env jest",
+    "prisma:migrate:test": "npx dotenv -e .test.env npx prisma migrate test",
+    "prisma:migrate:dev": "npx dotenv -e .development.env npx prisma migrate dev",
+    "prisma:generate:test": "npx dotenv -e .test.env npx prisma generate test",
+    "prisma:generate:dev": "npx dotenv -e .development.env npx prisma generate dev",
+    "coverage": "npm run test -- -- --coverage"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -18,6 +23,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@types/cors": "^2.8.13",
     "@types/dotenv": "^8.2.0",
     "@types/jest": "^29.5.1",

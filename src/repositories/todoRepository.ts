@@ -22,7 +22,8 @@ async function create({title, description}: Task){
 
 async function done(id: number){
     try {
-        await prisma.tasks.update({where: {
+
+        return await prisma.tasks.update({where: {
             id
         },
         data: {
@@ -38,7 +39,7 @@ async function done(id: number){
 
 async function undone(id: number){
     try {
-        await prisma.tasks.update({where: {
+        return await prisma.tasks.update({where: {
             id
         },
         data: {
