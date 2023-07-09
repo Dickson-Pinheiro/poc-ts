@@ -1,10 +1,6 @@
 import { ErrorRequestHandler, Response} from "express";
 import { ErrorResponse } from "../protocols/error.js";
 
-type HandleError = {
-    handleError(err: ErrorResponse, res: Response): Response
-}
-
 const acceptedErros = {
     notFoundError: (err: ErrorResponse, res: Response) => {
        return res.status(404).send(err.message)
@@ -15,14 +11,17 @@ const acceptedErros = {
     },
 
     internalServerError: (err: ErrorResponse, res: Response) => {
-        res.status(500).send(err.message)
+        return res.status(500).send(err.message)
     }
 }
 
+export type ErrorNameOptions = keyof typeof acceptedErros
 
 export const handleAplicationErrors: ErrorRequestHandler = (err: ErrorResponse, req, res, next)=> {
-    const handleError: HandleError  = {
-        handleError: acceptedErros[err.name]
+    try {
+        const handleError = acceptedErros[err.name]
+        return handleError(err, res)   
+    } catch (error) {
+        acceptedErros.internalServerError(err, res)
     }
-    return handleError.handleError(err, res)
 }

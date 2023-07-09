@@ -1,4 +1,6 @@
+import { ErrorNameOptions } from "../middlewares/handleAplicationErrors.js"
+
 export type ErrorResponse = {
-    name: string,
+    name: ErrorNameOptions,
     message: string
 }
